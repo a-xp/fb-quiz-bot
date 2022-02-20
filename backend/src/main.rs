@@ -47,6 +47,7 @@ impl HandlerAdapter {
 #[async_trait]
 impl MessageHandler for HandlerAdapter {
     async fn process_text(&self, message: TextMessage) {
+        log::debug!("Processing {:?}", message);
         self.engine
             .process_message(
                 PlayerMessage {
@@ -61,7 +62,7 @@ impl MessageHandler for HandlerAdapter {
             .await;
     }
 
-    async fn process_other(&self, request: Request<Body>) -> Response<Body> {
+    async fn process_other(&self, _request: Request<Body>) -> Response<Body> {
         Response::builder().status(404).body(Body::empty()).unwrap()
     }
 }

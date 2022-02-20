@@ -208,9 +208,25 @@ impl GameEngine {
                 if let Some(game) = app_context.definitions().get_game_by_id(game_id).await {
                     let mut ctx = MessageContext::new(app_context, game, channel, message);
                     ctx.process().await;
+                } else {
+                    log::debug!(
+                        "Ignoring message from {}: game {} not found",
+                        game_id,
+                        message.player_id.channel_id
+                    );
                 }
+            } else {
+                log::debug!(
+                    "Ignoring message from {}: no games configured for channel",
+                    message.player_id.channel_id
+                );
             }
-        };
+        } else {
+            log::debug!(
+                "Ignoring message from {}: no channel config",
+                message.player_id.channel_id
+            );
+        }
     }
 }
 

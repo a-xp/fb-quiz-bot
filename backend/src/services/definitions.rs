@@ -30,6 +30,11 @@ impl FileRepository {
     pub async fn load(data_dir: &PathBuf) -> anyhow::Result<FileRepository> {
         let channels = Self::load_channels(data_dir).await?;
         let games = Self::load_games(data_dir).await?;
+        log::info!(
+            "Loaded {} channels and {} games",
+            channels.len(),
+            games.len()
+        );
         anyhow::Ok(FileRepository {
             games: RwLock::new(games),
             channels: RwLock::new(channels),

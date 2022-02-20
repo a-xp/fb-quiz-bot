@@ -58,6 +58,12 @@ fn create_text_response(id: &str, text: &str) -> String {
 #[async_trait]
 impl ResponseSender for FbResponseService {
     async fn respond(&self, response: Response) {
+        log::debug!(
+            "Responding to {} on {} with {:?}",
+            response.to.id,
+            response.to.channel_id,
+            response.message
+        );
         let text = response.format.format(response.message);
         let json = create_text_response(response.to.id.as_str(), text.as_str());
         self.send_message(response.channel.token.as_str(), json)

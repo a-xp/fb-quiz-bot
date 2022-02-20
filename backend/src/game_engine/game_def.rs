@@ -1,7 +1,6 @@
 use crate::game_engine::types::{GameId, ResponseMessage, ResponseTextFormatter};
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
-use std::sync::Arc;
 
 pub type TopicId = u8;
 #[derive(Default, Debug, Copy, Clone, PartialEq)]
