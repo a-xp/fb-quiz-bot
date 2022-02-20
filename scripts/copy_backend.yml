@@ -1,0 +1,28 @@
+---
+- hosts: backend
+  become: true
+  gather_facts: false
+
+  tasks:
+  - name: Copy binary to server
+    copy:
+      src: ../backend/target/x86_64-unknown-linux-gnu/release/server
+      dest: "/usr/local/bin/{{ service }}"
+      mode: 0755
+      owner: root
+      group: root
+
+  - name: Copy deploy artifacts
+    copy:
+      src: ../backend/deploy/
+      dest: "/home/{{ service }}"
+      mode: 0755
+      owner: "{{ service }}"
+      group: "{{ service }}"
+
+  - name: Start service
+    systemd:
+      name: "{{ service }}"
+      state: restarted
+      enabled: yes
+      daemon_reload: yes

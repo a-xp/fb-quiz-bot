@@ -1,0 +1,29 @@
+{
+  "id": 1,
+  "name": "#TEST_GAME",
+  "max_attempt": 2,
+  "topics": [
+    {
+      "name": "Topic 1",
+      "key": "topic1",
+      "bonus": 1,
+      "questions": [
+        {
+          "text": "q11",
+          "answers": ["ans11", "ans12"]
+        }
+      ]
+    },
+    {
+      "name": "Topic 2",
+      "key": "topic2",
+      "bonus": 1,
+      "questions": [
+        {
+          "text": "q21",
+          "answers": ["ans21", "ans2"]
+        }
+      ]
+    }
+  ]
+}

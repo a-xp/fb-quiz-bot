@@ -1,0 +1,25 @@
+{
+  "entry": [
+    {
+      "id": "17841451802358813",
+      "messaging": [
+        {
+          "message": {
+            "is_echo": true,
+            "mid": "werfwer",
+            "text": "Ничего не понятно"
+          },
+          "recipient": {
+            "id": "4826337357487893"
+          },
+          "sender": {
+            "id": "17841451802358813"
+          },
+          "timestamp": 1644942936558
+        }
+      ],
+      "time": 1644942937029
+    }
+  ],
+  "object": "instagram"
+}

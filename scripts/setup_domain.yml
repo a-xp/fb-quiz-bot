@@ -1,0 +1,45 @@
+---
+- hosts: backend
+  become: true
+  gather_facts: false
+
+  tasks:
+  - name: create letsencrypt directory
+    file: name=/var/www/letsencrypt/{{ domain_name }} state=directory
+
+  - name: Install nginx config for http
+    template:
+      src: templates/nginx-http.j2
+      dest: /etc/nginx/sites-enabled/http-{{ domain_name }}
+
+  - name: Reload nginx to activate letsencrypt site
+    service: name=nginx state=restarted
+
+  - name: Create letsencrypt certificate
+    shell: letsencrypt certonly -n --webroot -w /var/www/letsencrypt/{{ domain_name }} -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }}
+    args:
+      creates: /etc/letsencrypt/live/{{ domain_name }}
+
+  - name: Generate dhparams
+    shell: openssl dhparam -out /etc/nginx/dhparams.pem 2048
+    args:
+      creates: /etc/nginx/dhparams.pem
+
+  - name: Install nginx config for https
+    template:
+      src: templates/nginx-https.j2
+      dest: /etc/nginx/sites-enabled/https-{{ domain_name }}
+
+  - name: Reload nginx to activate specified site
+    service: name=nginx state=restarted
+
+  - name: Install crontab
+    package:
+      name: cron
+      state: latest
+
+  - name: Add letsencrypt cronjob for cert renewal
+    cron:
+      name: letsencrypt_renewal_{{ domain_name }}
+      special_time: weekly
+      job: letsencrypt --renew certonly -n --webroot -w /var/www/letsencrypt/{{ domain_name }} -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }} && systemctl restart nginx

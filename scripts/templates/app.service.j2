@@ -1,0 +1,14 @@
+[Unit]
+Description={{ description }}
+
+[Service]
+User={{ service }}
+Group={{ service }}
+ExecStart=/usr/local/bin/{{ service }}
+WorkingDirectory=/home/{{ service }}
+{% for e in env %}
+Environment="{{ e }}"
+{% endfor %}
+
+[Install]
+WantedBy=multi-user.target
